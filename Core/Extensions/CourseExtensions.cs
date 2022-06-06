@@ -1,32 +1,26 @@
-﻿using Core.Helpers;
-using Interfaces.Models;
+﻿using Interfaces.Models;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Core.Extensions
 {
     public static class CourseExtensions
     {
-        public static bool TryAddVacation(this ICourse course, DateTime startVacationDate, DateTime endVacationDate)
+        public static bool TryAddNewCource(this IDictionary<ICourse, IDictionary<DateTime, DateTime>> courses, ICourse course)
         {
-            if(DateHelper.ValidateDates(startVacationDate, endVacationDate) &&
-               startVacationDate >= course.StartDate && 
-               startVacationDate <= course.EndDate &&
-               !course.Vacations.Any(v => (v.Key <= startVacationDate &&
-                                           v.Value >= startVacationDate) ||
-                                          (v.Key <= endVacationDate &&
-                                           v.Value >= endVacationDate)))
+            if (courses == null || !courses.Any() || courses.Any(x => x.Key.Id == course.Id))
             {
-                course.Vacations.Add(startVacationDate, endVacationDate);
-                var res = course.Vacations.OrderBy(v => v.Key).ToDictionary(x => x.Key, x => x.Value);
-                course.Vacations.Clear();
-                foreach (var item in res)
-                {
-                    course.Vacations.Add(item.Key, item.Value);
-                }
+                return false;
+            }
 
-                course.EndDate.Add(endVacationDate - startVacationDate);
+            if (!courses.Select(x => x.Key).Any(c => (c.StartDate <= course.StartDate &&
+                                                      c.EndDate >= course.StartDate) ||
+                                                     (c.StartDate <= course.EndDate &&
+                                                      c.EndDate >= course.EndDate)))
+            {
+                courses.Add(course, new Dictionary<DateTime, DateTime>());
                 return true;
             }
 

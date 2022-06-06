@@ -14,7 +14,7 @@ namespace Interfaces.Services
 
         Task<ICourse> AddCourse(IAddCourseViewModel model);
 
-        Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model);
+        //Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model);
 
         Task<bool> RemoveCourseById(IRemoveCourseByIdViewModel model);
 

@@ -1,4 +1,5 @@
 ﻿using Interfaces.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Interfaces.Context.Models
@@ -12,7 +13,7 @@ namespace Interfaces.Context.Models
 
         public string EmailAdress { get; set; }
 
-        public IList<ICourse> Courses { get; set; }
+        public IDictionary<ICourse, IDictionary<DateTime, DateTime>> Courses { get; set; }
 
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 
-namespace Interfaces.ViewModels.Course
+namespace Interfaces.ViewModels.Student
 {
-    public interface IAddVacationToCourseViewModel
+    public interface IAddVacationToStudentCourseViewModel
     {
+
+        int IdStudent { get; }
 
         int IdCourse { get; }
 

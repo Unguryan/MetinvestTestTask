@@ -2,16 +2,19 @@
 using Interfaces.Context;
 using Interfaces.Context.Models;
 using Interfaces.Models;
+using Interfaces.Services;
 using Interfaces.ViewModels.Student;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Interfaces.Services
+namespace Core.Services
 {
     public class StudentService : IStudentService
     {
-        
+
         private readonly StudentsContext _context;
 
         public StudentService(StudentsContext context)
@@ -35,7 +38,7 @@ namespace Interfaces.Services
             {
                 FullName = model.FullName,
                 EmailAdress = model.EmailAdress,
-                Courses = new List<ICourse>()
+                Courses = new Dictionary<ICourse, IDictionary<DateTime, DateTime>>()
             };
 
             var res = await _context.Students.AddAsync(s);
@@ -52,9 +55,34 @@ namespace Interfaces.Services
                 return false;
             }
 
-            //Add Transactions, Add Course here, to avoid not needed cource
             var res = user.Courses.TryAddNewCource(model.Course);
 
+            if (res)
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> AddVacationToStudentCourse(IAddVacationToStudentCourseViewModel model)
+        {
+            var user = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var c = user.Courses.FirstOrDefault(p => p.Key.Id == model.IdCourse);
+
+            if (c.Key == null)
+            {
+                return false;
+            }
+
+            var res = c.TryAddVacation(model.StartVacationDate, model.EndVacationDate);
             if (res)
             {
                 await _context.SaveChangesAsync();

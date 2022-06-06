@@ -3,13 +3,13 @@ using Core.Helpers;
 using Interfaces.Context;
 using Interfaces.Context.Models;
 using Interfaces.Models;
+using Interfaces.Services;
 using Interfaces.ViewModels.Course;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Interfaces.Services
+namespace Core.Services
 {
     public class CourseService : ICourseService
     {
@@ -52,8 +52,7 @@ namespace Interfaces.Services
             {
                 IdStudent = model.IdStudent,
                 StartDate = model.StartDate,
-                EndDate = model.EndDate,
-                Vacations = new Dictionary<DateTime, DateTime>()
+                EndDate = model.EndDate
             };
 
             var res = await _context.Courses.AddAsync(c);
@@ -61,19 +60,19 @@ namespace Interfaces.Services
             return res.Entity;
         }
 
-        public async Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model)
-        {
-            var c = await _context.Courses.FirstOrDefaultAsync(p => p.Id == model.IdCourse);
+        //public async Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model)
+        //{
+        //    var c = await _context.Courses.FirstOrDefaultAsync(p => p.Id == model.IdCourse);
 
-            var res = c.TryAddVacation(model.StartVacationDate, model.EndVacationDate);
-            if (res)
-            {
-                await _context.SaveChangesAsync();
-                return true;
-            }
+        //    var res = c.TryAddVacation(model.StartVacationDate, model.EndVacationDate);
+        //    if (res)
+        //    {
+        //        await _context.SaveChangesAsync();
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public async Task<bool> RemoveCourseById(IRemoveCourseByIdViewModel model)
         {

@@ -14,7 +14,7 @@ namespace Interfaces.Models
 
         DateTime EndDate { get; set; }
 
-        IDictionary<DateTime, DateTime> Vacations { get; }
+        //IDictionary<DateTime, DateTime> Vacations { get; }
 
     }
 }

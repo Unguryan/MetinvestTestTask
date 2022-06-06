@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Interfaces.Models
 {
@@ -11,7 +12,7 @@ namespace Interfaces.Models
 
         string EmailAdress { get; }
 
-        IList<ICourse> Courses { get; }
+        IDictionary<ICourse, IDictionary<DateTime, DateTime>> Courses { get; }
 
     }
 }

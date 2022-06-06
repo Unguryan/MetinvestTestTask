@@ -28,15 +28,15 @@ namespace Interfaces.Context
             modelBuilder.Entity<CourseDB>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<StudentDB>().Property(x => x.Id).ValueGeneratedOnAdd();
 
-            //modelBuilder.Entity<IStudent>()
-            //                .HasMany(s => s.Cources)
-            //                .WithOne()
-            //                .HasForeignKey(c => c.IdUser);
-
-            modelBuilder.Entity<CourseDB>()
-                            .HasOne<StudentDB>()
-                            .WithMany()
+            modelBuilder.Entity<StudentDB>()
+                            .HasMany(s => s.Courses.Keys)
+                            .WithOne()
                             .HasForeignKey(c => c.IdStudent);
+
+            //modelBuilder.Entity<CourseDB>()
+            //                .HasOne<StudentDB>()
+            //                .WithMany()
+            //                .HasForeignKey(c => c.IdStudent);
         }
     }
 }

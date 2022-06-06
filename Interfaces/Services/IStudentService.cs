@@ -18,5 +18,7 @@ namespace Interfaces.Services
 
         Task<bool> RemoveStudentById(IRemoveStudentByIdViewModel model);
 
+        Task<bool> AddVacationToStudentCourse(IAddVacationToStudentCourseViewModel model);
+
     }
 }
