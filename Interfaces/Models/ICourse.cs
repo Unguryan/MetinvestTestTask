@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Interfaces.Models
 {
@@ -7,11 +8,13 @@ namespace Interfaces.Models
 
         int Id { get; }
 
-        int IdUser { get; }
+        int IdStudent { get; }
 
         DateTime StartDate { get; }
 
-        DateTime EndDate { get; }
+        DateTime EndDate { get; set; }
+
+        IDictionary<DateTime, DateTime> Vacations { get; }
 
     }
 }

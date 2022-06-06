@@ -36,7 +36,7 @@ namespace Interfaces.Context
             modelBuilder.Entity<CourseDB>()
                             .HasOne<StudentDB>()
                             .WithMany()
-                            .HasForeignKey(c => c.IdUser);
+                            .HasForeignKey(c => c.IdStudent);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Interfaces.ViewModels.Course
     public interface IAddCourseViewModel
     {
 
-        int IdUser { get; }
+        int IdStudent { get; }
 
         DateTime StartDate { get; }
 

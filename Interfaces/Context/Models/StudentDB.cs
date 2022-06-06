@@ -12,7 +12,7 @@ namespace Interfaces.Context.Models
 
         public string EmailAdress { get; set; }
 
-        public IList<CourseDB> Courses { get; set; }
+        public IList<ICourse> Courses { get; set; }
 
     }
 }
