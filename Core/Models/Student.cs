@@ -10,12 +10,20 @@ namespace Core.Models
         {
         }
 
-        public Student(int id, string fullName, string emailAdress, IDictionary<ICourse, IDictionary<DateTime, DateTime>> courses)
+        public Student(int id, string fullName, string emailAdress, IDictionary<int, IDictionary<DateTime, DateTime>> courses)
         {
             Id = id;
             FullName = fullName;
             EmailAdress = emailAdress;
             Courses = courses;
+        }
+
+        public Student(int id, string fullName, string emailAdress)
+        {
+            Id = id;
+            FullName = fullName;
+            EmailAdress = emailAdress;
+            Courses = new Dictionary<int, IDictionary<DateTime, DateTime>>();
         }
 
         public int Id { get; }
@@ -24,7 +32,7 @@ namespace Core.Models
 
         public string EmailAdress { get; }
 
-        public IDictionary<ICourse, IDictionary<DateTime, DateTime>> Courses { get; }
+        public IDictionary<int, IDictionary<DateTime, DateTime>> Courses { get; }
 
     }
 }

@@ -12,7 +12,7 @@ namespace Interfaces.Models
 
         DateTime EndDate { get; set; }
 
-        IList<IStudent> Students { get; }
+        IList<int> Students { get; }
 
         //IDictionary<DateTime, DateTime> Vacations { get; }
 

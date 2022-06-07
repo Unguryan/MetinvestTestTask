@@ -8,28 +8,31 @@
 @model AddCourseToStudentModel
 
 @{
-    foreach(var item in @Model.Student.Courses)
+    @foreach (var item in @Model.Courses)
     {
         <div class="d-flex mt-2 align-center">
-                    <span class="fw-light fs-3 fw-bold">
-                        @item.Key.Id
-                    </span>
-                    <span class="fw-light fs-5 ms-2">
-                        @item.Key.StartDate.ToShortDateString() - @item.Key.EndDate.ToShortDateString()
-                    </span>
+            <span class="fw-light fs-3 fw-bold">
+                @item.Id
+            </span>
+            <span class="fw-light fs-5 ms-2">
+                @item.StartDate.ToShortDateString() - @item.EndDate.ToShortDateString()
+            </span>
 
-                    @{
-                        foreach(var v in @item.Value)
-                        {
-                            <span class="fw-light fs-5 ms-2">
-                                @v.Key.ToShortDateString() - @v.Value.ToShortDateString()
-                            </span>
-                        }
-                    }
-                    
-
-                    <a class="btn btn-outline-Success ms-2" asp-controller="Students" asp-action="AddVacationToCourseView" 
-                    asp-route-id=@item.Key.Id asp-route-studentId=@Model.Student.Id> Add Vacation </a>
+            <a class="btn btn-outline-Success ms-2" asp-controller="Students" asp-action="AddVacationToCourseView"
+       asp-route-id=@item.Id asp-route-studentId=@Model.Student.Id> Add Vacation </a>
         </div>
+
+        <div class="d-flex mt-2 align-center">
+            <span>Vacations: </span>
+            @foreach (var v in @Model.Student.Courses[item.Id])
+            {
+                <span class="fw-light fs-5 ms-2">
+                    @v.Key.ToShortDateString() - @v.Value.ToShortDateString()
+                </span>
+            }
+        </div>
+
+
+
     }
 }

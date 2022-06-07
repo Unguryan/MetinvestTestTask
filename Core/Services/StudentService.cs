@@ -94,6 +94,7 @@ namespace Core.Services
 
             if (res)
             {
+                _context.Update(student);
                 var r = await _context.SaveChangesAsync();
                 return true;
             }
@@ -103,7 +104,7 @@ namespace Core.Services
 
         public async Task<bool> AddVacationToStudentCourse(IAddVacationToStudentCourseViewModel model)
         {
-            var student = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+            var student = await _context.Students.Include(s => s.Courses).ThenInclude(x => x.Course).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
 
             if (student == null)
             {
@@ -120,6 +121,7 @@ namespace Core.Services
             var res = student.TryAddVacation(c.CourseId, model.StartVacationDate, model.EndVacationDate);
             if (res)
             {
+                _context.Update(student);
                 await _context.SaveChangesAsync();
                 return true;
             }

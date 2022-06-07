@@ -1,4 +1,5 @@
 ﻿using Interfaces.Services;
+using Interfaces.ViewModels.Student;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -102,5 +103,36 @@ namespace UI.Controllers
 
             return View("Index", await _studentService.GetAllStudents());
         }
+
+        [HttpGet("AddVacationToCourseView")]
+        public async Task<IActionResult> AddVacationToCourseView(string id, string studentId)
+        {
+            int.TryParse(id, out int resId);
+            int.TryParse(studentId, out int resStudentId);
+
+            var model = new AddVacationToStudentCourseViewModel() { IdCourse = resId, IdStudent = resStudentId,
+                                                                    StartVacationDate = DateTime.Now, EndVacationDate = DateTime.Now};
+
+            return View("_AddVacationToStudentCourseView", model);
+        }
+
+
+        [HttpPost("AddVacationToStudentCoursePostAction")]
+        public async Task<IActionResult> AddVacationToStudentCoursePostAction(AddVacationToStudentCourseViewModel model)
+        {
+            //int.TryParse(id, out int resId);
+            //int.TryParse(studentId, out int resStudentId);
+
+            //var model = new AddVacationToStudentCourseViewModel() { IdCourse = resId, IdStudent = resStudentId };
+
+            var res = await _studentService.AddVacationToStudentCourse(model);
+            if (res)
+            {
+                return Redirect($"GetStudentCourses/?id={model.IdStudent}");
+            }
+
+            return View("_Error", "Error");
+        }
+        
     }
 }

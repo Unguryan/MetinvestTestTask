@@ -36,28 +36,29 @@ namespace Core.Extensions
 
         public static ICourse ToCourse(this CourseDB courseDB)
         {
-            var stud = new List<IStudent>();
+            var stud = new List<int>();
 
             if(courseDB.Students != null)
             {
                 foreach (var item in courseDB?.Students)
                 {
-                    var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
-                    if (s != null)
-                    {
-                        var dictionary = new Dictionary<ICourse, IDictionary<DateTime, DateTime>>();
+                    stud.Add(item.StudentId);
+                    //var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
+                    //if (s != null)
+                    //{
+                    //    var dictionary = new Dictionary<int, IDictionary<DateTime, DateTime>>();
 
-                        for (int i = 0; i < s.Vacations.Count; i++)
-                        {
-                            var temp = new Course(s.Courses[i].Course.Id,
-                                                  s.Courses[i].Course.StartDate,
-                                                  s.Courses[i].Course.EndDate,
-                                                  stud);
+                    //    for (int i = 0; i < s.Vacations.Count; i++)
+                    //    {
+                    //        var temp = new Course(s.Courses[i].Course.Id,
+                    //                              s.Courses[i].Course.StartDate,
+                    //                              s.Courses[i].Course.EndDate,
+                    //                              stud);
 
-                            dictionary.Add(temp, s.Vacations[s.Courses[i].CourseId]);
-                        }
-                        stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, dictionary));
-                    }
+                    //        dictionary.Add(temp, s.Vacations[s.Courses[i].CourseId]);
+                    //    }
+                    //    stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, dictionary));
+                    //}
                 }
             }
 

@@ -4,14 +4,28 @@
 @{
 }
 
-@using Interfaces.ViewModels.Student
-@model IAddVacationToStudentCourseViewModel
+@using UI.ViewModels.Student
+@model AddVacationToStudentCourseViewModel
 
-<p>ID Student: @Model.IdStudent</p>
-<p>ID Course: @Model.IdCourse</p>
+@*<p>ID Student: @Model.IdStudent</p>
+<p>ID Course: @Model.IdCourse</p>*@
 
-<form asp-action="AddVacationCoursePostAction" role="form">
+<form asp-action="AddVacationToStudentCoursePostAction" role="form">
     <div class="col-md-3">
+            <div class="mt-2">
+            <label asp-for="IdStudent"></label>
+                <div>
+                    <input class="form-control" readonly asp-for="IdStudent"/>
+                </div>    
+            </div>
+
+            <div class="mt-2">
+            <label asp-for="IdCourse"></label>
+                <div>
+                    <input class="form-control" readonly asp-for="IdCourse"/>
+                </div>    
+            </div>
+
             <div class="mt-2">
             <label asp-for="StartVacationDate"></label>
                 <div>

@@ -53,14 +53,15 @@ namespace Core.Extensions
 
         public static IStudent ToStudent(this StudentDB studentDB)
         {
-            var courses = new Dictionary<ICourse, IDictionary<DateTime, DateTime>>();
+            var courses = new Dictionary<int, IDictionary<DateTime, DateTime>>();
 
             foreach (var item in studentDB?.Vacations)
             {
-                var c = studentDB.Courses.First(x => x.CourseId == item.Key).Course;
-                courses.Add(new Course(c.Id, c.StartDate, c.EndDate, new List<IStudent>() 
-                                      { new Student(studentDB.Id, studentDB.FullName, studentDB.EmailAdress, courses) }),
-                            item.Value);
+                courses.Add(item.Key, item.Value);
+                //var c = studentDB.Courses.First(x => x.CourseId == item.Key).Course;
+                //courses.Add(new Course(c.Id, c.StartDate, c.EndDate, new List<IStudent>() 
+                //                      { new Student(studentDB.Id, studentDB.FullName, studentDB.EmailAdress, courses) }),
+                //            item.Value);
             }
 
             return new Student(studentDB.Id,

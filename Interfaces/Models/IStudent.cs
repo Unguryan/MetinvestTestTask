@@ -12,7 +12,7 @@ namespace Interfaces.Models
 
         string EmailAdress { get; }
 
-        IDictionary<ICourse, IDictionary<DateTime, DateTime>> Courses { get; }
+        IDictionary<int, IDictionary<DateTime, DateTime>> Courses { get; }
 
     }
 }

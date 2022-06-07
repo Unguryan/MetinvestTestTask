@@ -10,12 +10,20 @@ namespace Core.Models
         {
         }
 
-        public Course(int id, DateTime startDate, DateTime endDate, List<IStudent> students)
+        public Course(int id, DateTime startDate, DateTime endDate, List<int> students)
         {
             Id = id;
             StartDate = startDate;
             EndDate = endDate;
             Students = students;
+        }
+
+        public Course(int id, DateTime startDate, DateTime endDate)
+        {
+            Id = id;
+            StartDate = startDate;
+            EndDate = endDate;
+            Students = new List<int>();
         }
 
         public int Id { get; }
@@ -24,7 +32,7 @@ namespace Core.Models
 
         public DateTime EndDate { get; set; }
 
-        public IList<IStudent> Students { get; }
+        public IList<int> Students { get; }
 
         //public IDictionary<DateTime, DateTime> Vacations { get; }
 
