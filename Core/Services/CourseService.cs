@@ -1,12 +1,15 @@
 ﻿using Core.Extensions;
 using Core.Helpers;
+using Core.Models;
 using Interfaces.Context;
 using Interfaces.Context.Models;
 using Interfaces.Models;
 using Interfaces.Services;
 using Interfaces.ViewModels.Course;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.Services
@@ -23,18 +26,25 @@ namespace Core.Services
 
         public async Task<IEnumerable<ICourse>> GetAllCourses()
         {
-            return await _context.Courses.ToListAsync();
+            var res = new List<ICourse>();
+
+            await foreach (var item in _context.Courses.Include(x => x.Students).AsAsyncEnumerable())
+            {
+                res.Add(item.ToCourse());
+            }
+
+            return res;
         }
 
         public async Task<IEnumerable<ICourse>> GetCourseByStudentId(IGetCourseByStudentIdViewModel model)
         {
             var res = new List<ICourse>();
 
-            await foreach (var item in _context.Courses.AsAsyncEnumerable())
+            await foreach (var item in _context.Courses.Include(x => x.Students).AsAsyncEnumerable())
             {
-                if (item.IdStudent == model.IdStudent)
+                if (item.Students.Any(x => x.StudentId == model.IdStudent))
                 {
-                    res.Add(item);
+                    res.Add(item.ToCourse());
                 }
             }
 
@@ -50,14 +60,13 @@ namespace Core.Services
 
             var c = new CourseDB()
             {
-                IdStudent = model.IdStudent,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate
             };
 
             var res = await _context.Courses.AddAsync(c);
             await _context.SaveChangesAsync();
-            return res.Entity;
+            return res.Entity.ToCourse();
         }
 
         //public async Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model)

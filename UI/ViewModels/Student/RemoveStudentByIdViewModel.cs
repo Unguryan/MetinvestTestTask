@@ -5,7 +5,7 @@ namespace UI.ViewModels.Student
     public class RemoveStudentByIdViewModel : IRemoveStudentByIdViewModel
     {
 
-        public int IdStudent { get; }
+        public int IdStudent { get; set; }
 
     }
 }

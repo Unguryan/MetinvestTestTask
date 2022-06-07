@@ -5,7 +5,7 @@ namespace UI.ViewModels.Course
     public class GetCourseByStudentIdViewModel : IGetCourseByStudentIdViewModel
     {
 
-        public int IdStudent { get; }
+        public int IdStudent { get; set; }
 
     }
 }

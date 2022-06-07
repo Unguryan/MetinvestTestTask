@@ -24,12 +24,29 @@ namespace Core.Services
 
         public async Task<IEnumerable<IStudent>> GetAllStudents()
         {
-            return await _context.Students.ToListAsync();
+            var res = new List<IStudent>();
+
+            await foreach (var item in _context.Students.Include(x => x.Courses).AsAsyncEnumerable())
+            {
+                res.Add(item.ToStudent());
+            }
+
+            return res;
         }
 
         public async Task<IStudent> GetStudentById(IGetStudentByIdViewModel model)
         {
-            return await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+            var res = new List<IStudent>();
+
+            await foreach (var item in _context.Students.Include(x => x.Courses).AsAsyncEnumerable())
+            {
+                if (item.Id == model.IdStudent)
+                    return item.ToStudent();
+            }
+
+            return null;
+
+            //return await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync().ToStudent();
         }
 
         public async Task<IStudent> AddStudent(IAddStudentViewModel model)
@@ -38,24 +55,25 @@ namespace Core.Services
             {
                 FullName = model.FullName,
                 EmailAdress = model.EmailAdress,
-                Courses = new Dictionary<ICourse, IDictionary<DateTime, DateTime>>()
+                Vacations = new Dictionary<int, IDictionary<DateTime, DateTime>>()
+                //Courses = new List<CourseStudentDB>()
             };
 
             var res = await _context.Students.AddAsync(s);
             await _context.SaveChangesAsync();
-            return res.Entity;
+            return res.Entity.ToStudent();
         }
 
         public async Task<bool> AddCourseToStudent(IAddCourseToStudentViewModel model)
         {
-            var user = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+            var student = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
 
-            if (user == null)
+            if (student == null)
             {
                 return false;
             }
 
-            var res = user.Courses.TryAddNewCource(model.Course);
+            var res = student.TryAddNewCource(model.Course);
 
             if (res)
             {
@@ -68,21 +86,21 @@ namespace Core.Services
 
         public async Task<bool> AddVacationToStudentCourse(IAddVacationToStudentCourseViewModel model)
         {
-            var user = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+            var student = await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync(p => p.Id == model.IdStudent);
 
-            if (user == null)
+            if (student == null)
             {
                 return false;
             }
 
-            var c = user.Courses.FirstOrDefault(p => p.Key.Id == model.IdCourse);
+            var c = student.Courses.FirstOrDefault(p => p.CourseId == model.IdCourse);
 
-            if (c.Key == null)
+            if (c == null)
             {
                 return false;
             }
 
-            var res = c.TryAddVacation(model.StartVacationDate, model.EndVacationDate);
+            var res = student.TryAddVacation(c.CourseId, model.StartVacationDate, model.EndVacationDate);
             if (res)
             {
                 await _context.SaveChangesAsync();
@@ -94,14 +112,14 @@ namespace Core.Services
 
         public async Task<bool> RemoveStudentById(IRemoveStudentByIdViewModel model)
         {
-            var user = await _context.Students.FirstOrDefaultAsync(p => p.Id == model.IdStudent);
+            var student = await _context.Students.FirstOrDefaultAsync(p => p.Id == model.IdStudent);
 
-            if (user == null)
+            if (student == null)
             {
                 return false;
             }
 
-            var res = _context.Students.Remove(user);
+            var res = _context.Students.Remove(student);
             await _context.SaveChangesAsync();
             return true;
         }

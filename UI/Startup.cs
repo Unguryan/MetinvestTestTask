@@ -48,9 +48,12 @@ namespace UI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Student}/{action=Index}");
+                endpoints.MapControllers();
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Student}/{action=Index}");
+                //endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute("default", "{controller=Students}/{action=Index}");
             });
         }
     }

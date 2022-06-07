@@ -5,7 +5,7 @@ namespace UI.ViewModels.Course
     public class RemoveCourseByIdViewModel : IRemoveCourseByIdViewModel
     {
 
-        public int IdCourse { get; }
+        public int IdCourse { get; set; }
 
     }
 }

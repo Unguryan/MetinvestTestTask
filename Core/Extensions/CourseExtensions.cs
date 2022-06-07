@@ -1,4 +1,6 @@
-﻿using Interfaces.Models;
+﻿using Core.Models;
+using Interfaces.Context.Models;
+using Interfaces.Models;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,44 @@ namespace Core.Extensions
 {
     public static class CourseExtensions
     {
-        public static bool TryAddNewCource(this IDictionary<ICourse, IDictionary<DateTime, DateTime>> courses, ICourse course)
+        public static bool TryAddNewCource(this StudentDB studentDB, ICourse course)
         {
-            if (courses == null || !courses.Any() || courses.Any(x => x.Key.Id == course.Id))
+            if (studentDB.Vacations == null || !studentDB.Vacations.Any() || studentDB.Vacations.Any(x => x.Key == course.Id))
             {
                 return false;
             }
 
-            if (!courses.Select(x => x.Key).Any(c => (c.StartDate <= course.StartDate &&
-                                                      c.EndDate >= course.StartDate) ||
-                                                     (c.StartDate <= course.EndDate &&
-                                                      c.EndDate >= course.EndDate)))
+            //var vacations = studentDB.Vacations.First(x => x.Key == course.Id).Value;
+            var courses = studentDB.Courses.Select(x => x.Course);
+
+
+            if (!courses.Any(c => (c.StartDate <= course.StartDate &&
+                                   c.EndDate >= course.StartDate) ||
+                                  (c.StartDate <= course.EndDate &&
+                                   c.EndDate >= course.EndDate)))
             {
-                courses.Add(course, new Dictionary<DateTime, DateTime>());
+                studentDB.Courses.Add(new CourseStudentDB() { CourseId = course.Id, StudentId = studentDB.Id});
+                studentDB.Vacations.Add(course.Id, new Dictionary<DateTime, DateTime>());
                 return true;
             }
 
             return false;
+        }
+
+        public static ICourse ToCourse(this CourseDB courseDB)
+        {
+            var stud = new List<IStudent>();
+
+            foreach (var item in courseDB?.Students)
+            {
+                var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
+                stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, null));
+            }
+
+            return new Course(courseDB.Id, 
+                              courseDB.StartDate,
+                              courseDB.EndDate,
+                              stud);
         }
     }
 }

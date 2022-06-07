@@ -6,9 +6,9 @@ namespace UI.ViewModels.Student
     public class AddCourseToStudentViewModel : IAddCourseToStudentViewModel
     {
 
-        public int IdStudent { get; }
+        public int IdStudent { get; set; }
 
-        public ICourse Course { get; }
+        public ICourse Course { get; set; }
 
     }
 }

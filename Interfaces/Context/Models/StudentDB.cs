@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Interfaces.Context.Models
 {
-    public class StudentDB : IStudent
+    public class StudentDB
     {
 
         public int Id { get; set; }
@@ -13,7 +13,9 @@ namespace Interfaces.Context.Models
 
         public string EmailAdress { get; set; }
 
-        public IDictionary<ICourse, IDictionary<DateTime, DateTime>> Courses { get; set; }
+        public IList<CourseStudentDB> Courses { get; set; }
+
+        public IDictionary<int, IDictionary<DateTime, DateTime>> Vacations { get; set; }
 
     }
 }

@@ -6,13 +6,13 @@ namespace UI.ViewModels.Student
     public class AddVacationToStudentCourseViewModel : IAddVacationToStudentCourseViewModel
     {
         
-        public int IdStudent { get; }
+        public int IdStudent { get; set; }
 
-        public int IdCourse { get; }
+        public int IdCourse { get; set; }
 
-        public DateTime StartVacationDate { get; }
+        public DateTime StartVacationDate { get; set; }
 
-        public DateTime EndVacationDate { get; }
+        public DateTime EndVacationDate { get; set; }
 
     }
 }
