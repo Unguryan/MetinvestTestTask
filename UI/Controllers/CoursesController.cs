@@ -50,7 +50,13 @@ namespace UI.Controllers
         {
             var res = await _courseService.AddCourse(course);
 
-            return View("Index", await _courseService.GetAllCourses());
+            if (res != null && res.Id != 0)
+            {
+                return View("Index", await _courseService.GetAllCourses());
+            }
+
+            return View("_Error", "Error");
+
         }
     }
 }

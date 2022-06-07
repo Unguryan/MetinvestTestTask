@@ -1,7 +1,9 @@
-﻿using Interfaces.Services;
+﻿using Interfaces.Models;
+using Interfaces.Services;
 using Interfaces.ViewModels.Student;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UI.Models;
@@ -63,7 +65,12 @@ namespace UI.Controllers
         {
             var res = await _studentService.AddStudent(student);
 
-            return View("Index", await _studentService.GetAllStudents());
+            if (res != null && res.Id != 0)
+            {
+                return View("Index", await _studentService.GetAllStudents());
+            }
+
+            return View("_Error", "Error");
         }
 
         [HttpGet("AddCourseToStudentView")]
@@ -80,10 +87,19 @@ namespace UI.Controllers
             var allCourses = await _courseService.GetAllCourses();
             var studentCourses = await _courseService.GetCourseByStudentId(new GetCourseByStudentIdViewModel() { IdStudent = res });
 
+            var c = new List<ICourse>();
+            foreach (var item in allCourses)
+            {
+                if(!studentCourses.Any(x => x.Id == item.Id))
+                {
+                    c.Add(item);
+                }  
+            }
+
             var model = new AddCourseToStudentModel()
             {
                 Student = student,
-                Courses = allCourses.Except(studentCourses).ToList()
+                Courses = c
             };
 
             return View("_AddCourseToStudentView", model);
@@ -101,7 +117,12 @@ namespace UI.Controllers
                 IdStudent = resStudentId
             });
 
-            return View("Index", await _studentService.GetAllStudents());
+            if (res)
+            {
+                return View("Index", await _studentService.GetAllStudents());
+            }
+
+            return View("_Error", "Error");
         }
 
         [HttpGet("AddVacationToCourseView")]
