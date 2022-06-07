@@ -6,9 +6,6 @@ namespace Core.Models
 {
     public class Student : IStudent
     {
-        public Student()
-        {
-        }
 
         public Student(int id, string fullName, string emailAdress, IDictionary<int, IDictionary<DateTime, DateTime>> courses)
         {
@@ -16,14 +13,6 @@ namespace Core.Models
             FullName = fullName;
             EmailAdress = emailAdress;
             Courses = courses;
-        }
-
-        public Student(int id, string fullName, string emailAdress)
-        {
-            Id = id;
-            FullName = fullName;
-            EmailAdress = emailAdress;
-            Courses = new Dictionary<int, IDictionary<DateTime, DateTime>>();
         }
 
         public int Id { get; }

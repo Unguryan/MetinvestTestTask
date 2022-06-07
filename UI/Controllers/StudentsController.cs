@@ -131,8 +131,10 @@ namespace UI.Controllers
             int.TryParse(id, out int resId);
             int.TryParse(studentId, out int resStudentId);
 
+            var c = await _courseService.GetCourseById(new GetCourseByIdViewModel() { IdCourse = resId });
+
             var model = new AddVacationToStudentCourseViewModel() { IdCourse = resId, IdStudent = resStudentId,
-                                                                    StartVacationDate = DateTime.Now, EndVacationDate = DateTime.Now};
+                                                                    StartVacationDate = c.StartDate, EndVacationDate = c.EndDate};
 
             return View("_AddVacationToStudentCourseView", model);
         }
@@ -141,11 +143,6 @@ namespace UI.Controllers
         [HttpPost("AddVacationToStudentCoursePostAction")]
         public async Task<IActionResult> AddVacationToStudentCoursePostAction(AddVacationToStudentCourseViewModel model)
         {
-            //int.TryParse(id, out int resId);
-            //int.TryParse(studentId, out int resStudentId);
-
-            //var model = new AddVacationToStudentCourseViewModel() { IdCourse = resId, IdStudent = resStudentId };
-
             var res = await _studentService.AddVacationToStudentCourse(model);
             if (res)
             {

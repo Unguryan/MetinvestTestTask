@@ -6,9 +6,6 @@ namespace Core.Models
 {
     public class Course : ICourse
     {
-        public Course()
-        {
-        }
 
         public Course(int id, DateTime startDate, DateTime endDate, List<int> students)
         {
@@ -16,14 +13,6 @@ namespace Core.Models
             StartDate = startDate;
             EndDate = endDate;
             Students = students;
-        }
-
-        public Course(int id, DateTime startDate, DateTime endDate)
-        {
-            Id = id;
-            StartDate = startDate;
-            EndDate = endDate;
-            Students = new List<int>();
         }
 
         public int Id { get; }

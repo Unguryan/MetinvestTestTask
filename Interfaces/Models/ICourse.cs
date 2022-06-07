@@ -14,7 +14,5 @@ namespace Interfaces.Models
 
         IList<int> Students { get; }
 
-        //IDictionary<DateTime, DateTime> Vacations { get; }
-
     }
 }

@@ -12,6 +12,7 @@ namespace Interfaces.Models
 
         string EmailAdress { get; }
 
+        //idCourse - Vacations
         IDictionary<int, IDictionary<DateTime, DateTime>> Courses { get; }
 
     }

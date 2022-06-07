@@ -17,10 +17,7 @@ namespace Core.Extensions
                 return false;
             }
 
-            //var vacations = studentDB.Vacations.First(x => x.Key == course.Id).Value;
             var courses = studentDB.Courses.Select(x => x.Course);
-
-
             if (!courses.Any(c => (c.StartDate <= course.StartDate &&
                                    c.EndDate >= course.StartDate) ||
                                   (c.StartDate <= course.EndDate &&
@@ -43,22 +40,6 @@ namespace Core.Extensions
                 foreach (var item in courseDB?.Students)
                 {
                     stud.Add(item.StudentId);
-                    //var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
-                    //if (s != null)
-                    //{
-                    //    var dictionary = new Dictionary<int, IDictionary<DateTime, DateTime>>();
-
-                    //    for (int i = 0; i < s.Vacations.Count; i++)
-                    //    {
-                    //        var temp = new Course(s.Courses[i].Course.Id,
-                    //                              s.Courses[i].Course.StartDate,
-                    //                              s.Courses[i].Course.EndDate,
-                    //                              stud);
-
-                    //        dictionary.Add(temp, s.Vacations[s.Courses[i].CourseId]);
-                    //    }
-                    //    stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, dictionary));
-                    //}
                 }
             }
 

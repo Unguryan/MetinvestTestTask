@@ -1,6 +1,5 @@
 ﻿using Core.Extensions;
 using Core.Helpers;
-using Core.Models;
 using Interfaces.Context;
 using Interfaces.Context.Models;
 using Interfaces.Models;
@@ -28,7 +27,7 @@ namespace Core.Services
         {
             var res = new List<ICourse>();
 
-            await foreach (var item in _context.Courses.Include(x => x.Students).AsAsyncEnumerable())
+            await foreach (var item in _context.Courses.AsAsyncEnumerable())
             {
                 res.Add(item.ToCourse());
             }
@@ -81,34 +80,5 @@ namespace Core.Services
             await _context.SaveChangesAsync();
             return res.Entity.ToCourse();
         }
-
-        //public async Task<bool> AddVacationToCourse(IAddVacationToCourseViewModel model)
-        //{
-        //    var c = await _context.Courses.FirstOrDefaultAsync(p => p.Id == model.IdCourse);
-
-        //    var res = c.TryAddVacation(model.StartVacationDate, model.EndVacationDate);
-        //    if (res)
-        //    {
-        //        await _context.SaveChangesAsync();
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        public async Task<bool> RemoveCourseById(IRemoveCourseByIdViewModel model)
-        {
-            var course = await _context.Courses.FirstOrDefaultAsync(p => p.Id == model.IdCourse);
-
-            if (course == null)
-            {
-                return false;
-            }
-
-            var res = _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
     }
 }

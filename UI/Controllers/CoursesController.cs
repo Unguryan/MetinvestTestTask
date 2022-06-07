@@ -56,7 +56,6 @@ namespace UI.Controllers
             }
 
             return View("_Error", "Error");
-
         }
     }
 }

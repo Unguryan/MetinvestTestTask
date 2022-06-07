@@ -34,7 +34,9 @@ namespace Core.Extensions
                !vacations.Any(v => (v.Key <= startVacationDate &&
                                     v.Value >= startVacationDate) ||
                                    (v.Key <= endVacationDate &&
-                                    v.Value >= endVacationDate)))
+                                    v.Value >= endVacationDate) ||
+                                    v.Key >= startVacationDate &&
+                                    v.Value <= endVacationDate))
             {
                 studentDB.Vacations[courseId].Add(startVacationDate, endVacationDate);
                 var res = studentDB.Vacations[courseId].OrderBy(v => v.Key).ToDictionary(x => x.Key, x => x.Value);
@@ -44,7 +46,6 @@ namespace Core.Extensions
                     studentDB.Vacations[courseId].Add(item.Key, item.Value);
                 }
 
-                //course.EndDate.Add(endVacationDate - startVacationDate);
                 return true;
             }
 
@@ -58,10 +59,6 @@ namespace Core.Extensions
             foreach (var item in studentDB?.Vacations)
             {
                 courses.Add(item.Key, item.Value);
-                //var c = studentDB.Courses.First(x => x.CourseId == item.Key).Course;
-                //courses.Add(new Course(c.Id, c.StartDate, c.EndDate, new List<IStudent>() 
-                //                      { new Student(studentDB.Id, studentDB.FullName, studentDB.EmailAdress, courses) }),
-                //            item.Value);
             }
 
             return new Student(studentDB.Id,

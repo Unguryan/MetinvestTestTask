@@ -26,7 +26,7 @@ namespace Core.Services
         {
             var res = new List<IStudent>();
 
-            await foreach (var item in _context.Students.Include(x => x.Courses).AsAsyncEnumerable())
+            await foreach (var item in _context.Students.AsAsyncEnumerable())
             {
                 res.Add(item.ToStudent());
             }
@@ -60,11 +60,7 @@ namespace Core.Services
             }
 
             return null;
-
-            //return await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync().ToStudent();
         }
-
-       
 
         public async Task<IStudent> AddStudent(IAddStudentViewModel model)
         {
@@ -73,7 +69,6 @@ namespace Core.Services
                 FullName = model.FullName,
                 EmailAdress = model.EmailAdress,
                 Vacations = new Dictionary<int, Dictionary<DateTime, DateTime>>()
-                //Courses = new List<CourseStudentDB>()
             };
 
             var res = await _context.Students.AddAsync(s);
@@ -128,20 +123,5 @@ namespace Core.Services
 
             return false;
         }
-
-        public async Task<bool> RemoveStudentById(IRemoveStudentByIdViewModel model)
-        {
-            var student = await _context.Students.FirstOrDefaultAsync(p => p.Id == model.IdStudent);
-
-            if (student == null)
-            {
-                return false;
-            }
-
-            var res = _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
     }
 }

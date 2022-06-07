@@ -14,7 +14,5 @@ namespace Interfaces.Context.Models
 
         public IList<CourseStudentDB> Students { get; set; }
 
-        //public IDictionary<DateTime, DateTime> Vacations { get; set; }
-
     }
 }

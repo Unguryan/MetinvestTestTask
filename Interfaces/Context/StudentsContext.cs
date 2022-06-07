@@ -1,10 +1,8 @@
 ﻿using Interfaces.Context.Models;
-using Interfaces.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Interfaces.Context
 {
@@ -33,8 +31,8 @@ namespace Interfaces.Context
             modelBuilder.Entity<StudentDB>()
             .Property(x => x.Vacations)
             .HasConversion(
-                x => ConvertToStringVacantions(x),
-                x => ConvertVacantions(x));
+                x => JsonConvert.SerializeObject(x),
+                x => JsonConvert.DeserializeObject<Dictionary<int, Dictionary<DateTime, DateTime>>>(x));
 
             modelBuilder.Entity<CourseStudentDB>()
                 .HasKey(x => new { x.StudentId, x.CourseId });
@@ -49,18 +47,5 @@ namespace Interfaces.Context
                 .WithMany(y => y.Students)
                 .HasForeignKey(y => y.CourseId);
         }
-
-        private string ConvertToStringVacantions(Dictionary<int, Dictionary<DateTime, DateTime>> x)
-        {
-            var res = JsonConvert.SerializeObject(x);
-            return res;
-        }
-
-        private Dictionary<int, Dictionary<DateTime, DateTime>> ConvertVacantions(string x)
-        {
-            var res = JsonConvert.DeserializeObject<Dictionary<int, Dictionary<DateTime, DateTime>>>(x);
-            return res;
-        }
-        
     }
 }
