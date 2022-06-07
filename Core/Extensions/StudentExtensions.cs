@@ -58,7 +58,8 @@ namespace Core.Extensions
             foreach (var item in studentDB?.Vacations)
             {
                 var c = studentDB.Courses.First(x => x.CourseId == item.Key).Course;
-                courses.Add(new Course(c.Id, c.StartDate, c.EndDate, null),
+                courses.Add(new Course(c.Id, c.StartDate, c.EndDate, new List<IStudent>() 
+                                      { new Student(studentDB.Id, studentDB.FullName, studentDB.EmailAdress, courses) }),
                             item.Value);
             }
 

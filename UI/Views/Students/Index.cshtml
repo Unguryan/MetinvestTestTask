@@ -21,6 +21,9 @@
                     <span class="fw-light fs-5 ms-2">
                         @item.FullName - @item.EmailAdress
                     </span>
+
+                    <a class="btn btn-outline-dark ms-2" asp-controller="Students" asp-action="GetStudentCourses" asp-route-id=@item.Id > See Courses </a>
+                    <a class="btn btn-outline-dark ms-2" asp-controller="Students" asp-action="AddCourseToStudentView" asp-route-id=@item.Id > Add Courses </a>
         </div>
     }
 }

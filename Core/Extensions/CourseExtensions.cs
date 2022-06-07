@@ -12,7 +12,7 @@ namespace Core.Extensions
     {
         public static bool TryAddNewCource(this StudentDB studentDB, ICourse course)
         {
-            if (studentDB.Vacations == null || !studentDB.Vacations.Any() || studentDB.Vacations.Any(x => x.Key == course.Id))
+            if (studentDB.Vacations == null || studentDB.Vacations.Any(x => x.Key == course.Id))
             {
                 return false;
             }
@@ -38,10 +38,27 @@ namespace Core.Extensions
         {
             var stud = new List<IStudent>();
 
-            foreach (var item in courseDB?.Students)
+            if(courseDB.Students != null)
             {
-                var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
-                stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, null));
+                foreach (var item in courseDB?.Students)
+                {
+                    var s = courseDB.Students.First(x => x.CourseId == item.CourseId).Student;
+                    if (s != null)
+                    {
+                        var dictionary = new Dictionary<ICourse, IDictionary<DateTime, DateTime>>();
+
+                        for (int i = 0; i < s.Vacations.Count; i++)
+                        {
+                            var temp = new Course(s.Courses[i].Course.Id,
+                                                  s.Courses[i].Course.StartDate,
+                                                  s.Courses[i].Course.EndDate,
+                                                  stud);
+
+                            dictionary.Add(temp, s.Vacations[s.Courses[i].CourseId]);
+                        }
+                        stud.Add(new Student(s.Id, s.FullName, s.EmailAdress, dictionary));
+                    }
+                }
             }
 
             return new Course(courseDB.Id, 

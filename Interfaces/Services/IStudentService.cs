@@ -10,6 +10,8 @@ namespace Interfaces.Services
 
         Task<IEnumerable<IStudent>> GetAllStudents();
 
+        Task<IEnumerable<IStudent>> GetStudentsByCourseId(IGetStudentsByCourseIdViewModel model);
+
         Task<IStudent> GetStudentById(IGetStudentByIdViewModel model);
 
         Task<IStudent> AddStudent(IAddStudentViewModel model);

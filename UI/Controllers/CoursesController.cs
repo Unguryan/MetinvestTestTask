@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using UI.ViewModels.Course;
+using UI.ViewModels.Student;
 
 namespace UI.Controllers
 {
@@ -11,9 +12,12 @@ namespace UI.Controllers
         
         private readonly ICourseService _courseService;
 
-        public CoursesController(ICourseService courseService)
+        private readonly IStudentService _studentService;
+
+        public CoursesController(ICourseService courseService, IStudentService studentService)
         {
             _courseService = courseService;
+            _studentService = studentService;
         }
 
         [HttpGet]
@@ -28,6 +32,12 @@ namespace UI.Controllers
             return View(await _courseService.GetCourseByStudentId(new GetCourseByStudentIdViewModel() { IdStudent = idStudent }));
         }
 
+        [HttpGet("GetCourseStudents")]
+        public async Task<IActionResult> GetCourseStudents(string id)
+        {
+            int.TryParse(id, out int res);
+            return View("../Students/Index", await _studentService.GetStudentsByCourseId(new GetStudentsByCourseIdViewModel() { IdCourse = res }));
+        }
 
         [HttpGet("AddCourseView")]
         public async Task<IActionResult> AddCourseView()

@@ -36,6 +36,19 @@ namespace Core.Services
             return res;
         }
 
+        public async Task<ICourse> GetCourseById(IGetCourseByIdViewModel model)
+        {
+            await foreach (var item in _context.Courses.Include(x => x.Students).AsAsyncEnumerable())
+            {
+                if (item.Id == model.IdCourse)
+                {
+                    return item.ToCourse();
+                }
+            }
+
+            return null;
+        }
+
         public async Task<IEnumerable<ICourse>> GetCourseByStudentId(IGetCourseByStudentIdViewModel model)
         {
             var res = new List<ICourse>();

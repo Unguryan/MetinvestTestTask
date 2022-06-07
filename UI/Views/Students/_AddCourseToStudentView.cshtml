@@ -4,15 +4,11 @@
 @{
 }
 
-@using Interfaces.Models
-@model IEnumerable<ICourse>
-
-<p> Course View </p>
-
-<a class="btn btn-outline-success" asp-controller="Courses" asp-action="AddCourseView"> Add Course </a>
+@using UI.Models
+@model AddCourseToStudentModel
 
 @{
-    foreach(var item in @Model)
+    foreach(var item in @Model.Courses)
     {
         <div class="d-flex mt-2 align-center">
                     <span class="fw-light fs-3 fw-bold">
@@ -22,7 +18,8 @@
                         @item.StartDate.ToShortDateString() - @item.EndDate.ToShortDateString()
                     </span>
 
-                    <a class="btn btn-outline-dark ms-2" asp-controller="Courses" asp-action="GetCourseStudents" asp-route-id=@item.Id > See Students </a>
+                    <a class="btn btn-outline-dark ms-2" asp-controller="Students" asp-action="AddCourseToStudentPostAction" 
+                    asp-route-id=@item.Id asp-route-studentId=@Model.Student.Id> Add </a>
         </div>
     }
 }

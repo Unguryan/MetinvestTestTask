@@ -34,7 +34,7 @@ namespace Interfaces.Context
             .Property(x => x.Vacations)
             .HasConversion(
                 x => JsonConvert.SerializeObject(x),
-                x => JsonConvert.DeserializeObject<IDictionary<int, IDictionary<DateTime, DateTime>>>(x));
+                x => JsonConvert.DeserializeObject<Dictionary<int, Dictionary<DateTime, DateTime>>>(x));
 
             modelBuilder.Entity<CourseStudentDB>()
                 .HasKey(x => new { x.StudentId, x.CourseId });

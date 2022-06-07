@@ -34,11 +34,26 @@ namespace Core.Services
             return res;
         }
 
-        public async Task<IStudent> GetStudentById(IGetStudentByIdViewModel model)
+        public async Task<IEnumerable<IStudent>> GetStudentsByCourseId(IGetStudentsByCourseIdViewModel model)
         {
             var res = new List<IStudent>();
 
             await foreach (var item in _context.Students.Include(x => x.Courses).AsAsyncEnumerable())
+            {
+                if (item.Courses.Any(x => x.CourseId == model.IdCourse))
+                {
+                    res.Add(item.ToStudent());
+                }
+            }
+
+            return res;
+        }
+
+        public async Task<IStudent> GetStudentById(IGetStudentByIdViewModel model)
+        {
+            var res = new List<IStudent>();
+
+            await foreach (var item in _context.Students.Include(x => x.Courses).ThenInclude(x => x.Course).AsAsyncEnumerable())
             {
                 if (item.Id == model.IdStudent)
                     return item.ToStudent();
@@ -49,13 +64,15 @@ namespace Core.Services
             //return await _context.Students.Include(s => s.Courses).FirstOrDefaultAsync().ToStudent();
         }
 
+       
+
         public async Task<IStudent> AddStudent(IAddStudentViewModel model)
         {
             var s = new StudentDB()
             {
                 FullName = model.FullName,
                 EmailAdress = model.EmailAdress,
-                Vacations = new Dictionary<int, IDictionary<DateTime, DateTime>>()
+                Vacations = new Dictionary<int, Dictionary<DateTime, DateTime>>()
                 //Courses = new List<CourseStudentDB>()
             };
 
@@ -77,7 +94,7 @@ namespace Core.Services
 
             if (res)
             {
-                await _context.SaveChangesAsync();
+                var r = await _context.SaveChangesAsync();
                 return true;
             }
 
